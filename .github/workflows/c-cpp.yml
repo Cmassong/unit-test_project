@@ -13,11 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
+    - name: Build with Make
       run: make
-    - name: make check
+    - name: Run tests
       run: make check
-    - name: make distcheck
-      run: make distcheck
