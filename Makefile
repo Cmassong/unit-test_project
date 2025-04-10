@@ -5,10 +5,10 @@ CC = gcc
 CFLAGS = -Wall -I./src -I./tests -I./fff -I./Unity/src
 
 # Source files for your main project (not the tests)
-SRC = src/helloW.c
+SRC = src/state_machine.c
 
 # Source files for tests (test file + Unity + Fake Functions)
-TEST_SRC = tests/test_helloW.c src/helloW.c Unity/src/unity.c 
+TEST_SRC = tests/test_state_machine.c src/state_machine.c Unity/src/unity.c 
 
 # Object files for normal compilation
 OBJ = $(SRC:.c=.o)
@@ -49,4 +49,4 @@ run: $(PROD_TARGET)
 
 # Clean up generated files
 clean:
-	rm -f src/*.o tests/*.o $(PROD_TARGET).exe $(TARGET).exe
+	rm -f src/*.o tests/*.o $(PROD_TARGET).exe $(TARGET).exe  test_results.txt program_output.txt

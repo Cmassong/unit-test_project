@@ -2,8 +2,15 @@
 Running Tests
 -------------
 
-tests/test_helloW.c:43:getGreeting_called_once:PASS
-tests/test_helloW.c:44:hello_returns_correct_greeting:PASS
+tests/test_state_machine.c:73:initial_state_is_idle:PASS
+Transitioning from IDLE to RUNNING.
+tests/test_state_machine.c:74:transition_from_idle_to_running_on_start_event:PASS
+Transitioning from IDLE to RUNNING.
+Transitioning from RUNNING to IDLE.
+tests/test_state_machine.c:75:transition_from_running_to_idle_on_stop_event:PASS
+tests/test_state_machine.c:76:no_transition_on_invalid_event_in_idle_state:PASS
+Transitioning from IDLE to RUNNING.
+tests/test_state_machine.c:77:leds_are_updated_immediately_on_state_change:PASS
 
 -------------
 Complete
@@ -11,5 +18,5 @@ Complete
 
 
 -----------------------
-2 Tests 0 Failures 0 Ignored 
+5 Tests 0 Failures 0 Ignored 
 OK
