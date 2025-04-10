@@ -2,14 +2,14 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "main", "09-04-2025 ---- Cmassong-#1" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "09-04-2025 ---- Cmassong-#1" ]
+    branches: [ "main"]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
