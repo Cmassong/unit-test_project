@@ -10,25 +10,22 @@ CFLAGS = -Wall $(INCLUDES)
 # Unity and FFF flags for CI
 ifdef CI
 	CFLAGS += -DUNITY_OUTPUT_CHAR=ci_putchar -DUNITY_EXCLUDE_FLOAT
+	TEST_SRC += tests/ci_output.c  # Add ci_output.c for CI
 endif
 
 # Source files
 SRC = src/state_machine.c
 UNITY_SRC = Unity/src/unity.c
-FFF_SRC = fff/fff.c  # Add this if you use fff.c (not just fakes via headers)
+FFF_SRC =  # If you use FFF library (add fff/fff.c if you have it)
 
-# CI-only putchar redirect
-CI_PUTCHAR_SRC = tests/ci_output.c
-
-# Test source files
+# Test source files (including Unity and any other dependencies)
 TEST_SRC = tests/test_state_machine.c $(SRC) $(UNITY_SRC) $(FFF_SRC)
 
-# Add ci_output.c for CI environments only
 ifdef CI
-	TEST_SRC += $(CI_PUTCHAR_SRC)
+	TEST_SRC += tests/ci_output.c  # Ensure ci_output.c is included only in CI
 endif
 
-# Object conversions
+# Object files
 OBJ = $(SRC:.c=.o)
 TEST_OBJ = $(TEST_SRC:.c=.o)
 
