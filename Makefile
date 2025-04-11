@@ -1,52 +1,70 @@
 # Compiler
 CC = gcc
 
+# Common Include Paths
+INCLUDES = -I./src -I./tests -I./fff -I./Unity/src
+
 # Compiler flags
-CFLAGS = -Wall -I./src -I./tests -I./fff -I./Unity/src
+CFLAGS = -Wall $(INCLUDES)
 
-# Source files for your main project (not the tests)
+# Unity and FFF flags for CI
+ifdef CI
+	CFLAGS += -DUNITY_OUTPUT_CHAR=ci_putchar -DUNITY_EXCLUDE_FLOAT
+	TEST_SRC += tests/ci_output.c  # Add ci_output.c for CI
+endif
+
+# Source files
 SRC = src/state_machine.c
+UNITY_SRC = Unity/src/unity.c
+FFF_SRC =  # If you use FFF library (add fff/fff.c if you have it)
 
-# Source files for tests (test file + Unity + Fake Functions)
-TEST_SRC = tests/test_state_machine.c src/state_machine.c Unity/src/unity.c 
+# Test source files (including Unity and any other dependencies)
+TEST_SRC = tests/test_state_machine.c $(SRC) $(UNITY_SRC) $(FFF_SRC)
 
-# Object files for normal compilation
+ifdef CI
+	TEST_SRC += tests/ci_output.c  # Ensure ci_output.c is included only in CI
+endif
+
+# Object files
 OBJ = $(SRC:.c=.o)
-
-# Object files for test compilation
 TEST_OBJ = $(TEST_SRC:.c=.o)
-
-# Combine all object files for linking
-ALL_OBJ = $(OBJ) $(TEST_OBJ)
 
 # Targets
 TARGET = run_tests
 PROD_TARGET = program
 
-# Default target: build and run tests
+# Default target
 all: $(TARGET)
 
-# Build the production executable
+# Production binary
 $(PROD_TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $(PROD_TARGET).exe $(OBJ)
 
-# Build the test executable
+# Test binary
 $(TARGET): $(TEST_OBJ)
 	$(CC) $(CFLAGS) -o $(TARGET).exe $(TEST_OBJ)
 
-# Compile C files into object files
+# Compilation rule
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Run tests
 test: $(TARGET)
-	./$(TARGET).exe --txt > test_results.txt
+	./$(TARGET).exe --txt | tee test_results.txt
 
-
-# Run the production program and store the output
+# Run production binary
 run: $(PROD_TARGET)
 	./$(PROD_TARGET).exe > program_output.txt
 
-# Clean up generated files
+# Full cleanup
 clean:
-	rm -f src/*.o tests/*.o $(PROD_TARGET).exe $(TARGET).exe  test_results.txt program_output.txt
+	rm -f src/*.o \
+	      tests/*.o \
+	      Unity/src/*.o \
+	      fff/*.o \
+	      $(PROD_TARGET).exe \
+	      $(TARGET).exe \
+	      test_results.txt \
+	      program_output.txt
+
+.PHONY: all test clean run
