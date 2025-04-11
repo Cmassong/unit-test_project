@@ -7,29 +7,28 @@ INCLUDES = -I./src -I./tests -I./fff -I./Unity/src
 # Compiler flags
 CFLAGS = -Wall $(INCLUDES)
 
-# Additional CI/Unity-specific flags
+# Unity and FFF flags for CI
 ifdef CI
 	CFLAGS += -DUNITY_OUTPUT_CHAR=ci_putchar -DUNITY_EXCLUDE_FLOAT
 endif
 
-# Production Source Files
+# Source files
 SRC = src/state_machine.c
-
-# Unity core
 UNITY_SRC = Unity/src/unity.c
+FFF_SRC = fff/fff.c  # Add this if you use fff.c (not just fakes via headers)
 
-# CI-only putchar redirect (only added in CI builds)
+# CI-only putchar redirect
 CI_PUTCHAR_SRC = tests/ci_output.c
 
-# Source files for tests
-TEST_SRC = tests/test_state_machine.c $(SRC) $(UNITY_SRC)
+# Test source files
+TEST_SRC = tests/test_state_machine.c $(SRC) $(UNITY_SRC) $(FFF_SRC)
 
-# Add CI putchar file in CI builds
+# Add ci_output.c for CI environments only
 ifdef CI
 	TEST_SRC += $(CI_PUTCHAR_SRC)
 endif
 
-# Object file conversion
+# Object conversions
 OBJ = $(SRC:.c=.o)
 TEST_OBJ = $(TEST_SRC:.c=.o)
 
@@ -60,8 +59,15 @@ test: $(TARGET)
 run: $(PROD_TARGET)
 	./$(PROD_TARGET).exe > program_output.txt
 
-# Clean up build artifacts
+# Full cleanup
 clean:
-	rm -f src/*.o tests/*.o $(PROD_TARGET).exe $(TARGET).exe test_results.txt program_output.txt
+	rm -f src/*.o \
+	      tests/*.o \
+	      Unity/src/*.o \
+	      fff/*.o \
+	      $(PROD_TARGET).exe \
+	      $(TARGET).exe \
+	      test_results.txt \
+	      program_output.txt
 
 .PHONY: all test clean run
