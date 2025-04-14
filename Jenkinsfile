@@ -19,6 +19,12 @@ pipeline {
                 sh 'make test'
             }
         }
+
+         stage('Build and Run program') {
+            steps {
+                sh 'make run'
+            }
+        }
     }
 
     post {
@@ -27,10 +33,10 @@ pipeline {
         }
 
         success {
-            setGitHubPullRequestStatus context: 'Jenkins', message: 'Test success', state: 'SUCCESS'
+            githubNotify context: 'build', status: 'SUCCESS', description: 'Tests passed'
         }
         failure {
-            setGitHubPullRequestStatus context: 'Jenkins', message: 'Test failed', state: 'FAILURE'
+            githubNotify context: 'build', status: 'FAILURE', description: 'Tests failed'
         }
 
 
