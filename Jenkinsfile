@@ -19,12 +19,6 @@ pipeline {
                 sh 'make test'
             }
         }
-
-         stage('Build and Run program') {
-            steps {
-                sh 'make run'
-            }
-        }
     }
 
     post {
@@ -33,10 +27,10 @@ pipeline {
         }
 
         success {
-            githubNotify context: 'build', status: 'SUCCESS', description: 'Tests passed'
+            echo "Build passed!"
         }
         failure {
-            githubNotify context: 'build', status: 'FAILURE', description: 'Tests failed'
+            echo "❌ Build failed"
         }
 
 
