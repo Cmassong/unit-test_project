@@ -27,10 +27,10 @@ pipeline {
         }
 
         success {
-            echo "Build passed!"
+            setGitHubPullRequestStatus context: 'Jenkins', message: 'Test success', state: 'SUCCESS'
         }
         failure {
-            echo "❌ Build failed"
+            setGitHubPullRequestStatus context: 'Jenkins', message: 'Test failed', state: 'FAILURE'
         }
 
 
