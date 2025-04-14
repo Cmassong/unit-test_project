@@ -11,6 +11,10 @@
 #define UNITY_PROGMEM
 #endif
 
+#ifdef UNITY_OUTPUT_CHAR
+#include "ci_output.h"
+#endif
+
 /* If omitted from header, declare overrideable prototypes here so they're ready for use */
 #ifdef UNITY_OMIT_OUTPUT_CHAR_HEADER_DECLARATION
 void UNITY_OUTPUT_CHAR(int);

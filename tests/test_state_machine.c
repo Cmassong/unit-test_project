@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../src/state_machine.h"
 #include "unity.h"
 #include "fff.h"
