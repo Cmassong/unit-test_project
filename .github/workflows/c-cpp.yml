@@ -17,4 +17,6 @@ jobs:
       run: make clean
     - name: Build with Make
       run: make test
+    - name: Build the program with error
+      run: make run
 
