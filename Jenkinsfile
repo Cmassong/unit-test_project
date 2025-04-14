@@ -25,5 +25,14 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'test_results.txt', allowEmptyArchive: true
         }
+
+        success {
+            echo "Build passed!"
+        }
+        failure {
+            echo "❌ Build failed"
+        }
+
+
     }
 }
